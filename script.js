@@ -98,34 +98,24 @@ function processText(text) {
 
 
 
-function frequenciesToSizedList(wordCount, minSize = 30, maxSize = 100) {
-    const values = Array.from(wordCount.values());
+function frequenciesToSizedList(wordList, minSize = 30, maxSize = 100) {
+    const values = wordList.map(item => item.count);
     const oldMin = Math.min(...values);
     const oldMax = Math.max(...values);
 
     const sizedList = [];
-    for (const [word, frequency] of wordCount.entries()) {
-        const normalized = (frequency - oldMin) / (oldMax - oldMin);
+    for (const {word, count} of wordList) {
+        const normalized = (count - oldMin) / (oldMax - oldMin);
         const size = Math.round(normalized * (maxSize - minSize) + minSize);
         sizedList.push({ text: word, size: size });
+
+        console.log(`Word: ${word}, Frequency: ${count}, Size: ${size}`);
     }
     return sizedList;
 }
 
-function drawWordCloud(wordCount) {
+function drawWordCloud(wordCount, width, height) {
     let sizedList = frequenciesToSizedList(wordCount);
-    // Pretty print the word cloud data
-    console.log('Word Cloud Data:');
-    console.table(
-        sizedList.sort((a, b) => b.size - a.size)
-        .map(({text, size}) => ({
-            word: text,
-            size: size,
-        }))
-    );
-
-    const width  = 800;
-    const height = 800;
 
     // Define your custom color palette here
     const customColors = ["#070656", "#083C62", "#095768", "#09716E", "#0A8C74", "0AA77A"];
@@ -176,18 +166,47 @@ function drawWordCloud(wordCount) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const generateButton = document.getElementById('generateButton');
+    const wordCloudCanvas = document.getElementById('wordCloudCanvas');
     const dataField = document.getElementById('dataField');
+    const generateButton = document.getElementById('generateButton');
+    const downloadButton = document.getElementById('downloadButton');
+
+    const width = 800;
+    const height = 800;
     
     generateButton.addEventListener('click', () => {
         let wordCount = processText(dataField.value);
 
-        drawWordCloud(wordCount);
+        wordCloudCanvas.innerHTML = ''; // Clear previous canvas
+        drawWordCloud(wordCount, width, height);
         
         let message = wordCount
         .map(({word, count}) => `${word}: ${count}`)
         .join('\n');
         
         alert("Top Words:\n" + message);
+    });
+
+    downloadButton.addEventListener('click', () => {
+      const svg = document.querySelector('svg');
+      const serializer = new XMLSerializer();
+      const svgString = serializer.serializeToString(svg);
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      const img = new window.Image();
+      const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(svgBlob);
+      img.onload = function() {
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+        URL.revokeObjectURL(url);
+        const link = document.createElement('a');
+        link.download = 'smed_wordcloud.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      };
+      img.src = url;
     });
 });

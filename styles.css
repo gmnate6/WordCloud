@@ -11,6 +11,22 @@ body {
     min-height: 100vh;
 }
 
+button {
+    height: 10%;
+    width: 30%;
+    padding: 10px;
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    background-color: #535456;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+button:hover {
+    background-color: #005A9F;
+}
+
 /* Header Opening */
 #header {
     background: #FFFFFF;
@@ -165,20 +181,5 @@ body {
     border: 1px solid #535456;
     background-color: #FFFFFF;
     resize: none;
-}
-#generateButton {
-    height: 10%;
-    width: 30%;
-    padding: 10px;
-    font-size: clamp(1rem, 2.5vw, 1.8rem);
-    background-color: #535456;
-    color: #FFFFFF;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-#generateButton:hover {
-    background-color: #005A9F;
 }
 /* Creator Closing */
