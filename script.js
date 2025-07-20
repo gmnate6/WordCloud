@@ -108,8 +108,6 @@ function frequenciesToSizedList(wordList, minSize = 30, maxSize = 100) {
         const normalized = (count - oldMin) / (oldMax - oldMin);
         const size = Math.round(normalized * (maxSize - minSize) + minSize);
         sizedList.push({ text: word, size: size });
-
-        console.log(`Word: ${word}, Frequency: ${count}, Size: ${size}`);
     }
     return sizedList;
 }
