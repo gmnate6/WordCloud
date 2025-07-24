@@ -13,7 +13,7 @@ body {
 
 button {
     height: 10%;
-    width: 30%;
+    width: 100%;
     padding: 10px;
     font-size: clamp(1rem, 2.5vw, 1.8rem);
     background-color: #535456;
@@ -37,6 +37,18 @@ textarea {
     border: 1px solid #535456;
     background-color: #FFFFFF;
     resize: none;
+}
+
+h1 {
+    font-size: clamp(1.2rem, 5vw, 3rem);
+}
+
+h2 {
+    font-size: clamp(1.2rem, 5vw, 2.5rem);
+}
+
+p {
+    font-size: clamp(1rem, 1.5vw, 1.8rem);
 }
 
 .squared-div {
@@ -81,7 +93,6 @@ textarea {
     vertical-align: middle;
 }
 .title {
-    font-size: clamp(1.2rem, 5vw, 3rem);
     flex: 1;
     text-align: center;
     margin: 0;
@@ -136,11 +147,9 @@ textarea {
     text-align: center;
 }
 .intro-text h1 {
-    font-size: clamp(1.2rem, 5vw, 3rem);
     margin: 0 0 clamp(10px, 5vw, 40px) 0;
 }
 .intro-text p {
-    font-size: clamp(1rem, 1.5vw, 1.8rem);
     line-height: 2;
     margin: 0;
 }
@@ -167,40 +176,25 @@ textarea {
 
 /* Creator Opening */
 .creator {
+    width: 80vw;
+    height: 80vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    width: 100%;
-    padding: 20px;
+}
+.creator > * {
+    flex: 1 1 0;
+    max-width: 50%;
+    padding: 10px;
 }
 
-.editor {
-    width: 80%;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-#wordCloudCanvas {
-    width: 80%;
-    max-width: 800px;
-    margin-bottom: 20px;
+#word-cloud {
     background-color: #FFFFFF;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    aspect-ratio: 1 / 1;
-    display: block;
 }
-.editor h2 {
-    font-size: clamp(1.2rem, 5vw, 3rem);
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-}
-#dataField {
-    aspect-ratio: 5 / 3;
-    width: 100%;
-    height: auto;
+
+#data-field {
+    aspect-ratio: 4 / 3;
 }
 /* Creator Closing */

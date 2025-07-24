@@ -32,12 +32,16 @@
         </div>
 
         <div class="creator">
-            <svg id="wordCloudCanvas" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid meet"></svg>
-            <button id="downloadButton">Download PNG</button>
-            <div class="editor">
+            <div class="creator-left">
+                <div id="word-cloud" class="squared-div"></div>
+                <button id="download-button">Download SVG</button>
+            </div>
+
+            <div class="creator-right">
                 <h2>Data Entry</h2>
-                <textarea name="Data Entry" id="dataField"></textarea>
-                <button id="generateButton">Generate</button>
+                <p>Either Copy & Paste in your data or drop in a PDF</p>
+                <textarea name="Data Entry" id="data-field" class="squared-div"></textarea>
+                <button id="generate-button">Generate</button>
             </div>
         </div>
     </div>

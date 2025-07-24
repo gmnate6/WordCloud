@@ -18,6 +18,8 @@ STOPWORDS = [
 function cleanText(text) {
     return text.toLowerCase()
         .replace(/\s+/g, ' ')
+        .replace("—", " ")
+        .replace("-", " ")
         .trim();
 }
 
@@ -29,18 +31,16 @@ function getWords(text) {
 function cleanWords(words) {
     const smallestWord = 3;
     const contractions = /(?:n't|’s|'s|'re|’re|'ve|’ve|'ll|’ll|'d|’d|'m|’m)$/i;
-    const punctuation = /[.,!?;:'"<>:/\\=()[\]{}]/g;
+    const specialChars = /[.,!?;:'"<>:/\\=()[\]{}]/g;
     const numberOnly = /^\d+$/;
 
     return words
         .map(word => {
-            // Remove common contractions
-            word = word.replace(contractions, '');
-
-            // Remove trailing punctuation
-            word = word.replace(punctuation, '');
-
-            return word;
+            return word
+                .replace(contractions, '')     // Remove common contractions
+                .replace(specialChars, '')     // Remove trailing punctuation
+                .replace(/[""]/g, '"')         // Normalize smart quotes to straight
+                .replace(/['']/g, "'");        // Normalize smart single quotes
         })
         .filter(word =>
             word.length >= smallestWord &&
@@ -83,7 +83,7 @@ function processText(text) {
     words = filterBlacklistWords(words, STOPWORDS);
 
     let wordCount = getWordCount(words);
-    return getTop(25, wordCount);
+    return getTop(100, wordCount);
 }
 
 
@@ -98,14 +98,14 @@ function processText(text) {
 
 
 
-function frequenciesToSizedList(wordList, minSize = 30, maxSize = 100) {
+function frequenciesToSizedList(wordList, minSize = 12, maxSize = 80) {
     const values = wordList.map(item => item.count);
     const oldMin = Math.min(...values);
     const oldMax = Math.max(...values);
 
     const sizedList = [];
     for (const {word, count} of wordList) {
-        const normalized = (count - oldMin) / (oldMax - oldMin);
+        const normalized = Math.pow((count - oldMin) / (oldMax - oldMin), 0.8); // Less extreme size differences
         const size = Math.round(normalized * (maxSize - minSize) + minSize);
         sizedList.push({ text: word, size: size });
     }
@@ -114,39 +114,58 @@ function frequenciesToSizedList(wordList, minSize = 30, maxSize = 100) {
 
 function drawWordCloud(wordCount, width, height) {
     let sizedList = frequenciesToSizedList(wordCount);
+    
+    // Sort the list by size to identify the largest word
+    sizedList.sort((a, b) => b.size - a.size);
+    
+    // Force the largest word to have 0 rotation when layout is calculated
+    const rotate = function(d) {
+        // The first word (largest) gets 0 rotation, others get random rotation
+        return d.size === sizedList[0].size ? 0 : ~~(Math.random() * 2) * 90;
+    };
 
     // Define your custom color palette here
     const customColors = ["#070656", "#083C62", "#095768", "#09716E", "#0A8C74", "0AA77A"];
 
     d3.layout.cloud()
-      .size([width, height])
-      .words(sizedList)
-      .padding(5)
-      .rotate(() => ~~(Math.random() * 2) * 90) // 0 or 90 degrees
-      .fontSize(d => d.size)
-      .on("end", draw)
-      .start();
+        .size([width, height])
+        .words(sizedList)
+        .padding(5)                   // Add some padding between words
+        .rotate(rotate)               // Use custom rotate function
+        .text(d => d.text)
+        .fontSize(d => d.size)
+        .spiral("archimedean")        // Try archimedean spiral for better spacing
+        .timeInterval(10)             // Animation step interval
+        //.random(() => 0.5)            // Deterministic layout
+        .on("end", draw_animation)
+        .start();
 
-    function draw(sizedList) {
-      d3.select("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", `translate(${width / 2}, ${height / 2})`)
-        .selectAll("text")
-        .data(sizedList)
-        .enter().append("text")
-        .style("font-size", d => `${d.size}px`)
-        .style("fill", () => customColors[Math.floor(Math.random() * customColors.length)])
-        .attr("text-anchor", "middle")
-        .attr("transform", d => `translate(${d.x},${d.y}) rotate(${d.rotate})`)
-        .text(d => d.text);
+    function draw_animation(sizedList) {
+        const svg = d3.select("#word-cloud")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+        const words = svg.selectAll("text")
+            .data(sizedList)
+            .enter().append("text")
+            .style("font-size", d => `${d.size}px`)
+            .style("font-family", "Impact")
+            .style("fill", () => customColors[Math.floor(Math.random() * customColors.length)])
+            .style("opacity", 0)  // Start with opacity 0
+            .attr("text-anchor", "middle")
+            .attr("transform", d => `translate(${d.x},${d.y}) rotate(${d.rotate})`)
+            .text(d => d.text);
+
+        // Animate words appearing
+        words.transition()
+            .duration(500)            // Animation duration in milliseconds
+            .delay((d, i) => i * 25)  // Stagger each word's appearance
+            .style("opacity", 1);     // Fade in to full opacity
     }
 }
-
-
-
-
 
 
 
@@ -164,47 +183,38 @@ function drawWordCloud(wordCount, width, height) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const wordCloudCanvas = document.getElementById('wordCloudCanvas');
-    const dataField = document.getElementById('dataField');
-    const generateButton = document.getElementById('generateButton');
-    const downloadButton = document.getElementById('downloadButton');
-
-    const width = 800;
-    const height = 800;
+    const wordCloud = document.getElementById('word-cloud');
+    const dataField = document.getElementById('data-field');
+    const generateButton = document.getElementById('generate-button');
+    const downloadButton = document.getElementById('download-button');
     
     generateButton.addEventListener('click', () => {
         let wordCount = processText(dataField.value);
+        let width = wordCloud.clientWidth;
+        let height = wordCloud.clientHeight;
 
-        wordCloudCanvas.innerHTML = ''; // Clear previous canvas
+        wordCloud.innerHTML = ''; // Clear previous canvas
         drawWordCloud(wordCount, width, height);
         
         let message = wordCount
         .map(({word, count}) => `${word}: ${count}`)
         .join('\n');
-        
-        alert("Top Words:\n" + message);
+        console.log(message);
     });
 
     downloadButton.addEventListener('click', () => {
-      const svg = document.querySelector('svg');
-      const serializer = new XMLSerializer();
-      const svgString = serializer.serializeToString(svg);
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      const img = new window.Image();
-      const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
-      const url = URL.createObjectURL(svgBlob);
-      img.onload = function() {
-        ctx.clearRect(0, 0, width, height);
-        ctx.drawImage(img, 0, 0, width, height);
-        URL.revokeObjectURL(url);
+        const svg = document.querySelector('svg');
+
+        const serializer = new XMLSerializer();
+        const svgString = serializer.serializeToString(svg);
+        const svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+        const url = URL.createObjectURL(svgBlob);
+        
         const link = document.createElement('a');
-        link.download = 'smed_wordcloud.png';
-        link.href = canvas.toDataURL('image/png');
+        link.download = 'smed_wordcloud.svg';
+        link.href = url;
         link.click();
-      };
-      img.src = url;
+        
+        URL.revokeObjectURL(url);
     });
 });
