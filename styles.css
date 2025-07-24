@@ -27,6 +27,36 @@ button:hover {
     background-color: #005A9F;
 }
 
+textarea {
+    width: 100%;
+    height: 100%;
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid #535456;
+    background-color: #FFFFFF;
+    resize: none;
+}
+
+.squared-div {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.squared-div > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 /* Header Opening */
 #header {
     background: #FFFFFF;
@@ -172,14 +202,5 @@ button:hover {
     aspect-ratio: 5 / 3;
     width: 100%;
     height: auto;
-    min-height: 150px;
-    font-size: clamp(1rem, 2.5vw, 1.8rem);
-    padding: 10px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    border-radius: 8px;
-    border: 1px solid #535456;
-    background-color: #FFFFFF;
-    resize: none;
 }
 /* Creator Closing */
