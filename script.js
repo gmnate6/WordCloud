@@ -166,7 +166,10 @@ function drawWordCloud(wordCount, width, height) {
             .style("opacity", 1);     // Fade in to full opacity
     }
 }
-
+function clearWordCloud() {
+    const wordCloud = document.getElementById('word-cloud');
+    wordCloud.innerHTML = ''; // Clear the word cloud1
+}
 
 
 
@@ -187,13 +190,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataField = document.getElementById('data-field');
     const generateButton = document.getElementById('generate-button');
     const downloadButton = document.getElementById('download-button');
+    const clearButton = document.getElementById('clear-button');
     
     generateButton.addEventListener('click', () => {
         let wordCount = processText(dataField.value);
         let width = wordCloud.clientWidth;
         let height = wordCloud.clientHeight;
 
-        wordCloud.innerHTML = ''; // Clear previous canvas
+        clearWordCloud(); // Clear previous word cloud
         drawWordCloud(wordCount, width, height);
         
         let message = wordCount
@@ -216,5 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
         link.click();
         
         URL.revokeObjectURL(url);
+    });
+
+    clearButton.addEventListener('click', () => {
+        clearWordCloud();
+        dataField.value = ''; // Clear the input field
     });
 });

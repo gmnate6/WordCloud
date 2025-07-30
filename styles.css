@@ -197,4 +197,8 @@ p {
 #data-field {
     aspect-ratio: 4 / 3;
 }
+
+#clear-button:hover {
+    background-color: #f04141;
+}
 /* Creator Closing */
