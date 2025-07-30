@@ -196,6 +196,7 @@ p {
 
 #data-field {
     aspect-ratio: 4 / 3;
+    overflow-y: auto;
 }
 
 #clear-button:hover {
