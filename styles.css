@@ -202,4 +202,17 @@ p {
 #clear-button:hover {
     background-color: #f04141;
 }
+@media (max-width: 1000px) {
+    .creator {
+        width: 90%;
+        flex-direction: column;
+        height: auto;
+    }
+
+    .creator > * {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+    }
+}
 /* Creator Closing */
