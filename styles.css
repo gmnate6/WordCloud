@@ -52,6 +52,7 @@ h2 {
 }
 
 p {
+    margin-bottom: 5em;  /* adds space below each paragraph */
     font-size: clamp(1rem, 1.5vw, 1.8rem);
 }
 
@@ -187,6 +188,11 @@ p {
 #data-field {
     aspect-ratio: 2;
     overflow-y: auto;
+}
+@media (max-width: 1000px) {
+    .creator {
+        width: 90vw;
+    }
 }
 /* Creator Closing */
 
