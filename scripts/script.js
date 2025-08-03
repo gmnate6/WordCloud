@@ -24,6 +24,7 @@ const minWordSizeField = document.getElementById('min-word-size-field');
 const maxWordSizeField = document.getElementById('max-word-size-field');
 
 const generateButton = document.getElementById('generate-button');
+const exampleButton = document.getElementById('example-button');
 const clearButton = document.getElementById('clear-button');
 
 // Custom Colors for Word Cloud
@@ -72,6 +73,12 @@ function generateWordCloud() {
         return;
     }
 
+    // Check dataField for content
+    if (dataField.value.trim() === '') {
+        alert("Please enter some data to generate a word cloud.");
+        return;
+    }
+
     let wordCount = getWordFrequencies(dataField.value, topAmount, minWordSize, maxWordSize);
 
     clearWordCloud(); // Clear previous word cloud
@@ -80,7 +87,7 @@ function generateWordCloud() {
         wordCloud.appendChild(svgWC);
     });
 
-    output.style.display = 'flex'; // Show output area
+    output.style.display = 'flex'; // Show the output area
 }
 
 function downloadWordCloud() {
@@ -108,8 +115,30 @@ generateButton.addEventListener('click', () => {
     generateWordCloud();
 });
 
-retryButton.addEventListener('click', () => {
-    generateWordCloud();
+exampleButton.addEventListener('click', () => {
+    // Use fetch to get the content of the 5why.txt file
+    fetch('examples_texts/5why.txt')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            // Set the content of the dataField to the text from the file
+            dataField.value = data;
+            console.log('5 Whys text loaded successfully!');
+        })
+        .catch(error => {
+            console.error('Error loading the 5 Whys text:', error);
+            alert('Failed to load the 5 Whys text. Please try again.');
+        }
+    );
+});
+
+exampleButton.addEventListener('click', () => {
+    const exampleData = "apple banana orange apple banana apple orange banana apple orange banana";
+    dataField.value = exampleData;
 });
 
 clearButton.addEventListener('click', () => {
@@ -119,6 +148,10 @@ clearButton.addEventListener('click', () => {
 
 downloadButton.addEventListener('click', () => {
     downloadWordCloud();
+});
+
+retryButton.addEventListener('click', () => {
+    generateWordCloud();
 });
 
 closeButton.addEventListener('click', () => {

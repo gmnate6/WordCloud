@@ -37,7 +37,7 @@ textarea {
     font-size: clamp(1rem, 2.5vw, 1.8rem);
     padding: 10px;
     box-sizing: border-box;
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid #535456;
     background-color: #FFFFFF;
     resize: none;
@@ -183,15 +183,84 @@ p {
 .creator {
     width: 40vw;
     align-items: center;
+    background: #FFFFFF;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 #data-field {
     aspect-ratio: 2;
     overflow-y: auto;
 }
+
+.creator label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.creator > div {
+    margin: 1.5rem 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.creator input[type="number"] {
+    width: 90%;
+    padding: 0.75rem;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #F8F9FA;
+}
+
+.creator input[type="number"]:focus {
+    outline: none;
+    border-color: #005A9F;
+    box-shadow: 0 0 0 3px rgba(0, 90, 159, 0.1);
+}
+
+.creator input[type="number"]:hover {
+    border-color: #005A9F;
+}
+
+.settings-group {
+    position: relative;
+    padding: 1rem;
+    background: #F8F9FA;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.settings-group label {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.button-group {
+    height: 10%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.button-group button {
+    height: 90%;
+}
+
 @media (max-width: 1000px) {
     .creator {
         width: 90vw;
+        padding: 1.5rem;
+    }
+
+    .creator > div {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 }
 /* Creator Closing */
