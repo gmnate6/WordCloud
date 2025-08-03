@@ -15,11 +15,12 @@ const STOPWORDS = new Set([
 // Convert to lowercase and replace multiple whitespace characters with a single space
 function cleanText(text) {
     return text.toLowerCase()
-        .replace(/[—_(){}\[\]<>.\-\/]/g, ' ')                                // seperate conjoined words
-        .replace(/(?:n't|’s|'s|'re|’re|'ve|’ve|'ll|’ll|'d|’d|'m|’m)\b/g, '') // strip contractions
-        .replace(/[^a-zà-ž\s]/g, '')                                         // remove everything except letters and spaces
-        .replace(/\s+/g, ' ')                                                // collapse multiple spaces into one
-        .trim();                                                             // remove leading and trailing whitespace
+        .replace(/[—_(){}\[\]<>.\-\/]/g, ' ')                                 // seperate conjoined words
+        .replace(/[\u2018\u2019\u201A\u201B\u201C\u201D\u201E\u201F'"]/g, "") // replace fancy and normal quotes
+        .replace(/[\u00A0\u00AD\u200B\u200C\u200D\uFEFF]/g, '')               // remove zero-width characters
+        .replace(/[*#]/g, '')                                                 // other common characters to remove
+        .replace(/\s+/g, ' ')                                                 // collapse multiple spaces into one
+        .trim();                                                              // remove leading and trailing whitespace
 }
 
 // Get word list based on whitespace
@@ -29,11 +30,20 @@ function getWords(text) {
 
 // Filter words based on length and blacklist
 function filterWords(words, smallestWord, largestWord, blacklist) {
+    const contractionPattern = /(?:n't|’s|'s|'re|’re|'ve|’ve|'ll|’ll|'d|’d|'m|’m)$/;
+
     return words
+        .map(word => {
+            word = word.replace(contractionPattern, ''); // remove contractions
+            word = word.replace(/[.,!?;:]+$/, '');       // remove trailing punctuation
+            return word;
+        })
         .filter(word =>
-            word.length >= smallestWord &&
-            word.length <= largestWord &&
-            !blacklist.has(word) // Filter out blacklist words  
+            word &&                        // ensure word is not empty
+            word.length >= smallestWord && // ensure word is not too small
+            word.length <= largestWord &&  // ensure word is not too large
+            /^[a-z]+$/.test(word) &&       // ensure word contains only letters
+            !blacklist.has(word)           // Filter out blacklist words  
         );
 }
 
