@@ -2,6 +2,9 @@
 
 A simple static website that creates Word Cloud visualizations based on user-inputted text data. The tool provides an intuitive interface to generate customizable word clouds that help visualize key themes and patterns in text.
 
+### Link
+https://gmnate6.github.io/WordCloud
+
 ## Features
 
 - Paste any text data to generate a word cloud visualization
