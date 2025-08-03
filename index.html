@@ -32,23 +32,46 @@
         </div>
 
         <div class="creator">
-            <div class="creator-left">
-                <div id="word-cloud" class="squared-div"></div>
-                <button id="download-button">Download SVG</button>
-            </div>
+            <label for="data-field">Copy & Paste in your data</label>
+            <textarea name="Data Entry" id="data-field" class="squared-div"></textarea>
 
-            <div class="creator-right">
-                <h2>Data Entry</h2>
-                <p>Copy & Paste in your data</p>
-                <textarea name="Data Entry" id="data-field" class="squared-div"></textarea>
-                <button id="generate-button">Generate</button>
-                <button id="clear-button">Clear</button>
-            </div>
+            <label for="width-field">Width (px):</label>
+            <input type="number" name="Width" id="width-field" value="1000" min="100" max="1000" step="50">
+            <label for="height-field">Height (px):</label>
+            <input type="number" name="Height" id="height-field" value="500" min="100" max="1000" step="50">
+
+            <label for="top-amount-field">Amount of Words:</label>
+            <input type="number" name="Amount of Words" id="top-amount-field" value="100" min="10" max="1000" step="10">
+
+            <label for="padding-field">Padding:</label>
+            <input type="number" name="Padding" id="padding-field" value="6" min="0" max="100" step="1">
+
+            <label for="min-font-field">Min Font Size:</label>
+            <input type="number" name="Min Font Size" id="min-font-field" value="15" min="5" max="200" step="5">
+            <label for="max-font-field">Max Font Size:</label>
+            <input type="number" name="Max Font Size" id="max-font-field" value="75" min="70" max="200" step="5">
+
+            <label for="min-word-size-field">Smallest Word Size:</label>
+            <input type="number" name="Smallest Word Size" id="min-word-size-field" value="2" min="0" max="5" step="1">
+            <label for="max-word-size-field">Largest Word Size:</label>
+            <input type="number" name="Largest Word Size" id="max-word-size-field" value="80" min="5" max="100" step="1">
+
+            <button id="generate-button">Generate</button>
+            <button id="clear-button" class="red-button">Clear</button>
         </div>
+    </div>
+
+    <div id="output">
+        <div id="word-cloud"></div>
+        <button id="download-button">Download SVG</button>
+        <button id="retry-button">Try Again</button>
+        <button id="close-button" class="red-button">Close</button>
     </div>
     
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/d3-cloud/build/d3.layout.cloud.js"></script>
+    <script src="word-processer.js"></script>
+    <script src="word-cloud.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -27,6 +27,10 @@ button:hover {
     background-color: #005A9F;
 }
 
+.red-button:hover {
+    background-color: #f04141;
+}
+
 textarea {
     width: 100%;
     height: 100%;
@@ -176,43 +180,54 @@ p {
 
 /* Creator Opening */
 .creator {
-    width: 80vw;
-    height: 80vh;
-    display: flex;
-    flex-direction: row;
+    width: 40vw;
     align-items: center;
 }
-.creator > * {
-    flex: 1 1 0;
-    max-width: 50%;
-    padding: 10px;
-}
 
+#data-field {
+    aspect-ratio: 2;
+    overflow-y: auto;
+}
+/* Creator Closing */
+
+/* Output Opening */
+#output {
+    position: fixed;
+    top: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    display: none;                 /* hidden by default */
+    flex-direction: column;        /* stack children vertically */
+    align-items: center;           /* center horizontally */
+    justify-content: center;       /* center vertically */
+    padding: 20px;                 /* ensure some space from edges */
+    overflow-y: auto;
+}
 #word-cloud {
+    width: auto;
+    height: auto;
+    display: flex;                 /* use flexbox for centering */
+    justify-content: center;       /* center horizontally */
+    align-items: center;           /* center vertically */
+    overflow: hidden;
+}
+#word-cloud svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: auto;
+
+
+
+    object-fit: contain;
     background-color: #FFFFFF;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-#data-field {
-    aspect-ratio: 4 / 3;
-    overflow-y: auto;
+#output button {
+    width: 300px;
 }
-
-#clear-button:hover {
-    background-color: #f04141;
-}
-@media (max-width: 1000px) {
-    .creator {
-        width: 90%;
-        flex-direction: column;
-        height: auto;
-    }
-
-    .creator > * {
-        width: 100%;
-        height: auto;
-        max-width: 100%;
-    }
-}
-/* Creator Closing */
+/* Output Closing */
