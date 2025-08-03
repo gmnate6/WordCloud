@@ -6,8 +6,7 @@ function frequenciesToSizedList(wordList, minSize, maxSize) {
 
     const sizedList = [];
     for (const {word, count} of wordList) {
-        const normalized = Math.pow((count - oldMin) / (oldMax - oldMin), 0.8); // Less extreme size differences
-        const normalizedNEW = (count - oldMin) / (oldMax - oldMin);
+        const normalized = (count - oldMin) / (oldMax - oldMin);
         const size = Math.round(normalized * (maxSize - minSize) + minSize);
         sizedList.push({ text: word, size: size });
     }
@@ -31,6 +30,7 @@ function drawWordCloud(wordCount, width, height, minTextSize = 12, maxTextSize =
             .padding(padding)
             .rotate(rotate)
             .text(d => d.text)
+            .font("Impact")
             .fontSize(d => d.size)
             .spiral("archimedean")
             .timeInterval(10)
