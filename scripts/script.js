@@ -136,11 +136,6 @@ exampleButton.addEventListener('click', () => {
     );
 });
 
-exampleButton.addEventListener('click', () => {
-    const exampleData = "apple banana orange apple banana apple orange banana apple orange banana";
-    dataField.value = exampleData;
-});
-
 clearButton.addEventListener('click', () => {
     clearWordCloud();
     dataField.value = ''; // Clear the input field
