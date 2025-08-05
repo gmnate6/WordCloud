@@ -117,7 +117,7 @@ generateButton.addEventListener('click', () => {
 
 exampleButton.addEventListener('click', () => {
     // Use fetch to get the content of the 5why.txt file
-    fetch('examples_texts/5why.txt')
+    fetch('examples/5why.txt')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
