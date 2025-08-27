@@ -52,8 +52,8 @@ h2 {
 }
 
 p {
-    margin-bottom: 5em;  /* adds space below each paragraph */
     font-size: clamp(1rem, 1.5vw, 1.8rem);
+    margin: 0;
 }
 
 .squared-div {
@@ -264,6 +264,14 @@ p {
     }
 }
 /* Creator Closing */
+
+.disclaimer {
+    text-align: center;
+    margin: 1rem 0;
+}
+.disclaimer p {
+    font-size: 1rem;
+}
 
 /* Output Opening */
 #output {
