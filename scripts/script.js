@@ -1,5 +1,7 @@
 console.log("Script Loaded!");
 
+const counter = document.getElementById('counter');
+
 // Output Elements
 const output = document.getElementById('output');
 const wordCloud = document.getElementById('word-cloud');
@@ -48,7 +50,7 @@ function clearWordCloud() {
     wordCloud.innerHTML = '';
 }
 
-function generateWordCloud() {
+async function generateWordCloud() {
     // Validate and clamp input values
     clampNumberInput(widthField);
     clampNumberInput(heightField);
@@ -88,6 +90,8 @@ function generateWordCloud() {
     });
 
     output.style.display = 'flex'; // Show the output area
+
+    // Update Counter
 }
 
 function downloadWordCloud() {
@@ -104,12 +108,6 @@ function downloadWordCloud() {
     
     URL.revokeObjectURL(url);
 }
-
-
-
-
-
-
 
 generateButton.addEventListener('click', () => {
     generateWordCloud();
