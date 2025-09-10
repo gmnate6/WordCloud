@@ -5,6 +5,8 @@ A website that creates Word Cloud visualizations based on user-inputted text dat
 ### Link
 https://gmnate6.github.io/WordCloud
 
+![Hyprland Demo 2](./assets/wordcloud.png)
+
 ## Features
 
 - Paste any text data to generate a word cloud visualization
