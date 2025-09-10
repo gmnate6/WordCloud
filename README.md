@@ -42,7 +42,3 @@ https://gmnate6.github.io/WordCloud
 ## About
 
 Built by Coastal Simple, this Word Cloud Creator tool is designed to help users quickly visualize and understand patterns in text data. Whether you're analyzing feedback, exploring themes, or simplifying complex text data, this tool provides a straightforward way to generate meaningful visual representations.
-
-## Demo
-
-The tool i
